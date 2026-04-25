@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Software de Tareas Académicas
 
 Proyecto realizado en Python con Flask, HTML, CSS y SQLite.
@@ -71,3 +72,7 @@ software_tareas_flask/
     ├── editar.html
     └── estadisticas.html
 ```
+=======
+# gestor-tareas-academicas
+Sistema web para gestión de tareas académicas con login, registro y recuperación de contraseña por correo.
+>>>>>>> f0edf6f35102ae00d19d350fddce9c1eb2172ecd
