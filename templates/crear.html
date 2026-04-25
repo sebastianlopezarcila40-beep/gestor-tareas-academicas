@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block contenido %}
+<div class="card">
+    <h2>Crear tarea</h2>
+
+    <form method="POST" class="formulario">
+        <label>Título de la tarea</label>
+        <input type="text" name="titulo" required>
+
+        <label>Descripción</label>
+        <textarea name="descripcion" required></textarea>
+
+        <label>Materia</label>
+        <input type="text" name="materia" required>
+
+        <label>Fecha de entrega</label>
+        <input type="date" name="fecha_entrega" required>
+
+        <br><br>
+        <button class="btn" type="submit">Guardar tarea</button>
+    </form>
+</div>
+{% endblock %}

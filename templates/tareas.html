@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block contenido %}
+<div class="card">
+    <h2>Lista de tareas</h2>
+
+    <form method="GET" class="filtros">
+        <div>
+            <label>Materia</label>
+            <input type="text" name="materia" value="{{ materia }}" placeholder="Ej: Matemáticas">
+        </div>
+
+        <div>
+            <label>Estado</label>
+            <select name="estado">
+                <option value="">Todos</option>
+                <option value="Pendiente" {% if estado == "Pendiente" %}selected{% endif %}>Pendiente</option>
+                <option value="En proceso" {% if estado == "En proceso" %}selected{% endif %}>En proceso</option>
+                <option value="Completada" {% if estado == "Completada" %}selected{% endif %}>Completada</option>
+            </select>
+        </div>
+
+        <div>
+            <label>Fecha</label>
+            <input type="date" name="fecha" value="{{ fecha }}">
+        </div>
+
+        <button class="btn" type="submit">Filtrar</button>
+    </form>
+</div>
+
+<div class="card">
+    <a class="btn" href="{{ url_for('crear_tarea') }}">Agregar tarea</a>
+    <br><br>
+
+    <table class="tabla">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Materia</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for tarea in tareas %}
+            <tr>
+                <td>{{ tarea.titulo }}</td>
+                <td>{{ tarea.materia }}</td>
+                <td>{{ tarea.fecha_entrega }}</td>
+                <td>
+                    <span class="estado {{ tarea.estado.replace(' ', '-') }}">
+                        {{ tarea.estado }}
+                    </span>
+                </td>
+                <td>{{ tarea.descripcion }}</td>
+                <td>
+                    <a class="btn" href="{{ url_for('editar_tarea', id=tarea.id) }}">Editar</a>
+                    <a class="btn btn-success" href="{{ url_for('completar_tarea', id=tarea.id) }}">Completar</a>
+                    <a class="btn btn-danger" href="{{ url_for('eliminar_tarea', id=tarea.id) }}" onclick="return confirm('¿Seguro que deseas eliminar esta tarea?')">Eliminar</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="6">No hay tareas registradas.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

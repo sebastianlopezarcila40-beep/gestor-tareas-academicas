@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block contenido %}
+<h2>Estadísticas del sistema</h2>
+
+<div class="estadisticas">
+    <div class="stat">
+        <h2>{{ total }}</h2>
+        <p>Total de tareas</p>
+    </div>
+
+    <div class="stat">
+        <h2>{{ pendientes }}</h2>
+        <p>Pendientes</p>
+    </div>
+
+    <div class="stat">
+        <h2>{{ en_proceso }}</h2>
+        <p>En proceso</p>
+    </div>
+
+    <div class="stat">
+        <h2>{{ completadas }}</h2>
+        <p>Completadas</p>
+    </div>
+</div>
+
+<br>
+
+<div class="card">
+    <h3>Tareas por materia</h3>
+    <table class="tabla">
+        <thead>
+            <tr>
+                <th>Materia</th>
+                <th>Cantidad de tareas</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in por_materia %}
+            <tr>
+                <td>{{ item.materia }}</td>
+                <td>{{ item.cantidad }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="2">No hay datos para mostrar.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

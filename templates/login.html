@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+<div class="card">
+  <div class="logo-circulo">ST</div>
+
+  <h2>Iniciar sesión</h2>
+
+  <form method="POST">
+    <label>Usuario</label>
+    <input type="text" name="usuario" placeholder="Escribe tu usuario" required>
+
+    <label>Contraseña</label>
+    <input type="password" name="password" placeholder="Escribe tu contraseña" required>
+
+    <button class="btn" type="submit">Entrar</button>
+  </form>
+
+  <div class="opciones-login">
+    <a href="{{ url_for('registro') }}">Crear cuenta</a>
+    <a href="{{ url_for('recuperar') }}">¿Olvidaste tu contraseña?</a>
+  </div>
+
+  <p class="desarrollador">Desarrollado por Sebastián López</p>
+</div>
+{% endblock %}

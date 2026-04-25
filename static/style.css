@@ -1,0 +1,172 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    color: #1f2937;
+    min-height: 100vh;
+}
+
+.navbar {
+    background: transparent;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.menu a {
+    color: white;
+    margin-left: 18px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contenedor {
+    width: 90%;
+    max-width: 1150px;
+    margin: 30px auto;
+}
+
+.hero,
+.card {
+    background: #f8fafc;
+    padding: 45px;
+    border-radius: 24px;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+    text-align: center;
+    max-width: 520px;
+    margin: 50px auto;
+}
+
+.hero h1,
+.card h2 {
+    font-size: 34px;
+    color: #111827;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #475569;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.logo-circulo {
+    width: 68px;
+    height: 68px;
+    background: #2563eb;
+    color: white;
+    border-radius: 18px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.btn {
+    width: 100%;
+    display: inline-block;
+    background: #2563eb;
+    color: white;
+    padding: 13px 18px;
+    border-radius: 12px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 12px;
+}
+
+.btn:hover {
+    background: #1d4ed8;
+}
+
+.formulario label {
+    display: block;
+    margin-top: 12px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.formulario input,
+.formulario textarea,
+.formulario select,
+.card input {
+    width: 100%;
+    padding: 13px;
+    margin-top: 8px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+}
+
+.opciones-login {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.opciones-login a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.desarrollador {
+    margin-top: 18px;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.tabla th,
+.tabla td {
+    padding: 13px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+.tabla th {
+    background: #1e40af;
+    color: white;
+}
+
+.alert {
+    max-width: 520px;
+    margin: 15px auto;
+    padding: 12px;
+    border-radius: 10px;
+    background: #e0f2fe;
+}
+
+@media (max-width: 800px) {
+    .navbar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hero,
+    .card {
+        padding: 30px;
+        margin-top: 30px;
+    }
+}

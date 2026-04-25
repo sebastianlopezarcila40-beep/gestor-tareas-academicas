@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+<div class="card">
+  <h2>Recuperar contraseña</h2>
+
+  <form method="POST">
+    <label>Correo registrado</label>
+    <input type="email" name="email" required>
+
+    <button class="btn" type="submit">Enviar enlace</button>
+  </form>
+
+  <p><a href="{{ url_for('login') }}">Volver al login</a></p>
+</div>
+{% endblock %}

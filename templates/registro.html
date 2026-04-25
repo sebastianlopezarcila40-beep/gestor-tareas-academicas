@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+<div class="card">
+  <div class="logo-circulo">ST</div>
+
+  <h2>Crear cuenta</h2>
+
+  <form method="POST">
+    <label>Usuario</label>
+    <input type="text" name="usuario" placeholder="Crea un usuario" required>
+
+    <label>Correo electrónico</label>
+    <input type="email" name="email" placeholder="correo@gmail.com" required>
+
+    <label>Contraseña</label>
+    <input type="password" name="password" placeholder="Crea una contraseña" required>
+
+    <button class="btn" type="submit">Registrarme</button>
+  </form>
+
+  <div class="opciones-login">
+    <a href="{{ url_for('login') }}">Ya tengo cuenta</a>
+    <a href="{{ url_for('recuperar') }}">¿Olvidaste tu contraseña?</a>
+  </div>
+
+  <p class="desarrollador">Desarrollado por Sebastián López</p>
+</div>
+{% endblock %}

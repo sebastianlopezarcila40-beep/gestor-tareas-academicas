@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block contenido %}
+
+<div class="hero">
+
+    <!-- LOGO -->
+    <div class="logo-circulo">ST</div>
+
+    <h1>Software de Gestión de Tareas Académicas</h1>
+
+    <p>
+        Sistema diseñado para organizar tareas por materia, fecha de entrega,
+        estado y seguimiento académico.
+    </p>
+
+    <h3>Actualizaciones incluidas</h3>
+
+    <p><strong>Versión 1:</strong> inicio, lista de tareas, crear tarea, editar tarea y materia.</p>
+    <p><strong>Versión 2:</strong> agregar tarea, completar tarea y eliminar tarea.</p>
+    <p><strong>Versión 3:</strong> login, filtros, fecha, diseño visual y estadísticas.</p>
+
+    {% if session.get("usuario") %}
+        <a class="btn" href="{{ url_for('listar_tareas') }}">Ver tareas</a>
+    {% else %}
+        <a class="btn" href="{{ url_for('login') }}">Ingresar al sistema</a>
+    {% endif %}
+
+    <!-- DESARROLLADOR -->
+    <p class="desarrollador">Desarrollado por Sebastián López</p>
+
+</div>
+
+{% endblock %}

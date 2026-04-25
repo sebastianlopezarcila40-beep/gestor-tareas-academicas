@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block contenido %}
+<div class="card">
+    <h2>Editar tarea</h2>
+
+    <form method="POST" class="formulario">
+        <label>Título de la tarea</label>
+        <input type="text" name="titulo" value="{{ tarea.titulo }}" required>
+
+        <label>Descripción</label>
+        <textarea name="descripcion" required>{{ tarea.descripcion }}</textarea>
+
+        <label>Materia</label>
+        <input type="text" name="materia" value="{{ tarea.materia }}" required>
+
+        <label>Fecha de entrega</label>
+        <input type="date" name="fecha_entrega" value="{{ tarea.fecha_entrega }}" required>
+
+        <label>Estado</label>
+        <select name="estado">
+            <option value="Pendiente" {% if tarea.estado == "Pendiente" %}selected{% endif %}>Pendiente</option>
+            <option value="En proceso" {% if tarea.estado == "En proceso" %}selected{% endif %}>En proceso</option>
+            <option value="Completada" {% if tarea.estado == "Completada" %}selected{% endif %}>Completada</option>
+        </select>
+
+        <br><br>
+        <button class="btn" type="submit">Actualizar tarea</button>
+    </form>
+</div>
+{% endblock %}
