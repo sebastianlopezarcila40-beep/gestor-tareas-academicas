@@ -16,7 +16,7 @@ DESARROLLADOR = "SEBASTIAN LOPEZ"
 VERSION = "4.02"
 
 SOPORTE_EMAIL = os.getenv("SOPORTE_EMAIL", "studytasksoporte@gmail.com")
-SOPORTE_PASSWORD = os.getenv("rbon gbmu gtuh aper", "")
+SOPORTE_PASSWORD = os.getenv("SOPORTE_PASSWORD", "")
 
 
 def get_db():
@@ -59,7 +59,7 @@ def init_db():
         )
     """)
 
-    agregar_columna_si_no_existe(cur, "usuarios", "email", "TEXT UNIQUE")
+    agregar_columna_si_no_existe(cur, "usuarios", "email", "TEXT")
     agregar_columna_si_no_existe(cur, "usuarios", "reset_pin", "TEXT")
     agregar_columna_si_no_existe(cur, "usuarios", "reset_expira", "TEXT")
     agregar_columna_si_no_existe(cur, "tareas", "usuario_id", "INTEGER")
@@ -77,7 +77,7 @@ def init_db():
 
 def enviar_pin(destino, pin):
     if not SOPORTE_PASSWORD:
-        print("ERROR CORREO: falta configurar SOPORTE_PASSWORD")
+        print("ERROR CORREO: falta configurar SOPORTE_PASSWORD en Render")
         print("PIN DE PRUEBA:", pin)
         return False
 
@@ -177,27 +177,12 @@ def login():
             (usuario,)
         ).fetchone()
 
-        if user:
-            password_db = user["password"]
-
-            try:
-                valido = check_password_hash(password_db, password)
-            except Exception:
-                valido = password_db == password
-
-            if valido:
-                if not (password_db.startswith("pbkdf2:") or password_db.startswith("scrypt:")):
-                    conn.execute(
-                        "UPDATE usuarios SET password = ? WHERE id = ?",
-                        (generate_password_hash(password), user["id"])
-                    )
-                    conn.commit()
-
-                session["usuario"] = user["usuario"]
-                session["usuario_id"] = user["id"]
-                flash("Inicio de sesión correcto.", "success")
-                conn.close()
-                return redirect(url_for("listar_tareas"))
+        if user and check_password_hash(user["password"], password):
+            session["usuario"] = user["usuario"]
+            session["usuario_id"] = user["id"]
+            flash("Inicio de sesión correcto.", "success")
+            conn.close()
+            return redirect(url_for("listar_tareas"))
 
         conn.close()
         flash("Usuario o contraseña incorrectos.", "danger")
@@ -482,6 +467,9 @@ def estadisticas():
     )
 
 
+# Esto es CLAVE para Render: crea la base de datos al iniciar
+init_db()
+
+
 if __name__ == "__main__":
-    init_db()
     app.run(debug=True)
