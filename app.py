@@ -16,7 +16,7 @@ DESARROLLADOR = "SEBASTIAN LOPEZ"
 VERSION = "4.02"
 
 SOPORTE_EMAIL = os.getenv("SOPORTE_EMAIL", "studytasksoporte@gmail.com")
-SOPORTE_PASSWORD = os.getenv("SOPORTE_PASSWORD", "")
+SOPORTE_PASSWORD = os.getenv("rbon gbmu gtuh aper", "")
 
 
 def get_db():
