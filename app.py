@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, make_response
 import sqlite3
 from datetime import datetime, timedelta
 from functools import wraps
@@ -13,10 +13,12 @@ app.secret_key = os.getenv("SECRET_KEY", "clave_secreta_para_proyecto_tareas")
 
 DB_NAME = "tareas.db"
 DESARROLLADOR = "SEBASTIAN LOPEZ"
-VERSION = "4.02"
+VERSION = "4.03"
 
 SOPORTE_EMAIL = os.getenv("SOPORTE_EMAIL", "studytasksoporte@gmail.com")
 SOPORTE_PASSWORD = os.getenv("rbon gbmu gtuh aper", "")
+SOPORTE_WHATSAPP = "+57 3126285480"
+NOMBRE_IA = "StudyNova IA"
 
 
 def get_db():
@@ -94,6 +96,8 @@ Tu PIN de recuperación es: {pin}
 Este PIN vence en 10 minutos.
 
 StudySoft v{VERSION}
+Soporte: {SOPORTE_EMAIL}
+WhatsApp: {SOPORTE_WHATSAPP}
 Desarrollado por {DESARROLLADOR}
 """)
 
@@ -112,6 +116,50 @@ def usuario_actual_id():
     return session.get("usuario_id")
 
 
+def analizar_tarea_ia(tarea):
+    titulo = tarea["titulo"].lower()
+    descripcion = (tarea["descripcion"] or "").lower()
+    materia = tarea["materia"].lower()
+    fecha_entrega = tarea["fecha_entrega"]
+
+    texto = f"{titulo} {descripcion} {materia}"
+
+    prioridad = "Media"
+    consejo = "Organiza un bloque de estudio y avanza por partes."
+
+    if "examen" in texto or "evaluación" in texto or "quiz" in texto:
+        prioridad = "Alta"
+        consejo = "Prepárate con anticipación. Estudia mínimo 30 minutos hoy y haz un repaso antes de la fecha."
+
+    if "mañana" in texto or "urgente" in texto:
+        prioridad = "Alta"
+        consejo = "Haz esta tarea primero. Evita dejarla para última hora."
+
+    if fecha_entrega:
+        try:
+            fecha = datetime.strptime(fecha_entrega, "%Y-%m-%d").date()
+            hoy = datetime.now().date()
+            dias = (fecha - hoy).days
+
+            if dias <= 1:
+                prioridad = "Alta"
+                consejo = "La fecha está muy cerca. Prioriza esta tarea hoy."
+            elif dias <= 3 and prioridad != "Alta":
+                prioridad = "Media"
+                consejo = "Empieza pronto para no acumular trabajo."
+            elif dias >= 7:
+                prioridad = "Baja"
+                consejo = "Aún tienes tiempo, pero agenda un avance pequeño."
+        except:
+            pass
+
+    return {
+        "nombre_ia": NOMBRE_IA,
+        "prioridad": prioridad,
+        "consejo": consejo
+    }
+
+
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -126,13 +174,25 @@ def login_required(f):
 def variables_globales():
     return dict(
         desarrollador=DESARROLLADOR,
-        version=VERSION
+        version=VERSION,
+        soporte_email=SOPORTE_EMAIL,
+        soporte_whatsapp=SOPORTE_WHATSAPP,
+        nombre_ia=NOMBRE_IA,
+        cookies_aceptadas=request.cookies.get("cookies_aceptadas") == "si",
+        aviso_version=f"🚀 Nueva versión {VERSION}: StudyNova IA, cookies, soporte visible y mejoras de experiencia."
     )
 
 
 @app.route("/")
 def inicio():
     return render_template("inicio.html")
+
+
+@app.route("/aceptar-cookies")
+def aceptar_cookies():
+    respuesta = make_response(redirect(request.referrer or url_for("inicio")))
+    respuesta.set_cookie("cookies_aceptadas", "si", max_age=60 * 60 * 24 * 365)
+    return respuesta
 
 
 @app.route("/login-google")
@@ -227,9 +287,8 @@ def recuperar():
 
             conn.close()
             return redirect(url_for("nueva_password"))
-        else:
-            flash("No existe una cuenta con ese correo.", "danger")
 
+        flash("No existe una cuenta con ese correo.", "danger")
         conn.close()
 
     return render_template("recuperar.html")
@@ -306,9 +365,17 @@ def listar_tareas():
     tareas = conn.execute(query, params).fetchall()
     conn.close()
 
+    tareas_con_ia = []
+    for tarea in tareas:
+        tareas_con_ia.append({
+            "tarea": tarea,
+            "ia": analizar_tarea_ia(tarea)
+        })
+
     return render_template(
         "tareas.html",
         tareas=tareas,
+        tareas_con_ia=tareas_con_ia,
         materia=materia,
         estado=estado,
         fecha=fecha
@@ -467,9 +534,7 @@ def estadisticas():
     )
 
 
-# Esto es CLAVE para Render: crea la base de datos al iniciar
 init_db()
-
 
 if __name__ == "__main__":
     app.run(debug=True)
