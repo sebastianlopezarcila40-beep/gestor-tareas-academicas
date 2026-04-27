@@ -1,33 +1,32 @@
 {% extends "base.html" %}
+
 {% block contenido %}
 
 <div class="hero">
-
-    <!-- LOGO -->
     <div class="logo-circulo">ST</div>
 
     <h1>Software de Gestión de Tareas Académicas</h1>
 
     <p>
         Sistema diseñado para organizar tareas por materia, fecha de entrega,
-        estado y seguimiento académico.
+        estado y ahora con apoyo de <strong>{{ nombre_ia }}</strong>.
     </p>
 
-    <h3>Actualizaciones incluidas</h3>
+    <div class="version-lista">
+        <h3>🚀 Actualizaciones incluidas</h3>
+        <ul>
+            <li><b>Versión 4.03:</b> StudyNova IA, cookies, soporte y mejoras visuales</li>
+            <li><b>Versión 3:</b> login, filtros, fecha, diseño visual y estadísticas</li>
+            <li><b>Versión 2:</b> agregar tarea, completar tarea y eliminar</li>
+            <li><b>Versión 1:</b> inicio, lista de tareas, crear tarea y editar</li>
+        </ul>
+    </div>
 
-    <p><strong>Versión 1:</strong> inicio, lista de tareas, crear tarea, editar tarea y materia.</p>
-    <p><strong>Versión 2:</strong> agregar tarea, completar tarea y eliminar tarea.</p>
-    <p><strong>Versión 3:</strong> login, filtros, fecha, diseño visual y estadísticas.</p>
+    <a class="btn" href="{{ url_for('listar_tareas') }}">Ver tareas</a>
 
-    {% if session.get("usuario") %}
-        <a class="btn" href="{{ url_for('listar_tareas') }}">Ver tareas</a>
-    {% else %}
-        <a class="btn" href="{{ url_for('login') }}">Ingresar al sistema</a>
-    {% endif %}
-
-    <!-- DESARROLLADOR -->
-    <p class="desarrollador">Desarrollado por Sebastián López</p>
-
+    <div class="desarrollador">
+        Desarrollado por {{ desarrollador }}
+    </div>
 </div>
 
 {% endblock %}

@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+
 {% block contenido %}
+
 <div class="card">
     <h2>Lista de tareas</h2>
 
@@ -30,7 +32,6 @@
 
 <div class="card">
     <a class="btn" href="{{ url_for('crear_tarea') }}">Agregar tarea</a>
-    <br><br>
 
     <table class="tabla">
         <thead>
@@ -40,33 +41,50 @@
                 <th>Fecha</th>
                 <th>Estado</th>
                 <th>Descripción</th>
+                <th>{{ nombre_ia }}</th>
                 <th>Acciones</th>
             </tr>
         </thead>
+
         <tbody>
-            {% for tarea in tareas %}
-            <tr>
-                <td>{{ tarea.titulo }}</td>
-                <td>{{ tarea.materia }}</td>
-                <td>{{ tarea.fecha_entrega }}</td>
-                <td>
-                    <span class="estado {{ tarea.estado.replace(' ', '-') }}">
-                        {{ tarea.estado }}
-                    </span>
-                </td>
-                <td>{{ tarea.descripcion }}</td>
-                <td>
-                    <a class="btn" href="{{ url_for('editar_tarea', id=tarea.id) }}">Editar</a>
-                    <a class="btn btn-success" href="{{ url_for('completar_tarea', id=tarea.id) }}">Completar</a>
-                    <a class="btn btn-danger" href="{{ url_for('eliminar_tarea', id=tarea.id) }}" onclick="return confirm('¿Seguro que deseas eliminar esta tarea?')">Eliminar</a>
-                </td>
-            </tr>
+            {% if tareas_con_ia %}
+                {% for item in tareas_con_ia %}
+                    {% set tarea = item.tarea %}
+                    {% set ia = item.ia %}
+
+                    <tr>
+                        <td>{{ tarea.titulo }}</td>
+                        <td>{{ tarea.materia }}</td>
+                        <td>{{ tarea.fecha_entrega }}</td>
+                        <td>
+                            <span class="estado {{ tarea.estado|replace(' ', '-') }}">
+                                {{ tarea.estado }}
+                            </span>
+                        </td>
+                        <td>{{ tarea.descripcion }}</td>
+
+                        <td>
+                            <div class="ia-box">
+                                <strong>{{ ia.nombre_ia }}</strong>
+                                <p>Prioridad: <b>{{ ia.prioridad }}</b></p>
+                                <small>{{ ia.consejo }}</small>
+                            </div>
+                        </td>
+
+                        <td class="acciones">
+                            <a class="btn" href="{{ url_for('editar_tarea', id=tarea.id) }}">Editar</a>
+                            <a class="btn btn-success" href="{{ url_for('completar_tarea', id=tarea.id) }}">Completar</a>
+                            <a class="btn btn-danger" href="{{ url_for('eliminar_tarea', id=tarea.id) }}">Eliminar</a>
+                        </td>
+                    </tr>
+                {% endfor %}
             {% else %}
-            <tr>
-                <td colspan="6">No hay tareas registradas.</td>
-            </tr>
-            {% endfor %}
+                <tr>
+                    <td colspan="7">No hay tareas registradas.</td>
+                </tr>
+            {% endif %}
         </tbody>
     </table>
 </div>
+
 {% endblock %}

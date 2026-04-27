@@ -2,37 +2,60 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Software de Tareas</title>
+    <title>TaskPro Académico v{{ version }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
 <nav class="navbar">
     <div class="logo">TaskPro Académico</div>
+
     <div class="menu">
         <a href="{{ url_for('inicio') }}">Inicio</a>
+
         {% if session.get("usuario") %}
             <a href="{{ url_for('listar_tareas') }}">Lista de tareas</a>
             <a href="{{ url_for('crear_tarea') }}">Crear tarea</a>
             <a href="{{ url_for('estadisticas') }}">Estadísticas</a>
             <a href="{{ url_for('logout') }}">Cerrar sesión</a>
         {% else %}
-            <a href="{{ url_for('login') }}">Login</a>
+            <a href="{{ url_for('login') }}">Iniciar sesión</a>
+            <a href="{{ url_for('registro') }}">Crear cuenta</a>
         {% endif %}
     </div>
 </nav>
 
-<div class="contenedor">
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert">{{ message }}</div>
+<main class="contenedor">
+
+    <div class="alert version-alert">
+        {{ aviso_version }}
+    </div>
+
+    {% with mensajes = get_flashed_messages(with_categories=true) %}
+        {% if mensajes %}
+            {% for categoria, mensaje in mensajes %}
+                <div class="alert">{{ mensaje }}</div>
             {% endfor %}
         {% endif %}
     {% endwith %}
 
-    {% block contenido %}{% endblock %}
+    {% block contenido %}
+    {% endblock %}
+
+</main>
+
+<footer class="footer-soporte">
+    <p><strong>Soporte:</strong> {{ soporte_email }}</p>
+    <p><strong>WhatsApp:</strong> {{ soporte_whatsapp }}</p>
+    <p>Versión {{ version }} | Desarrollado por {{ desarrollador }}</p>
+</footer>
+
+{% if not cookies_aceptadas %}
+<div class="cookie-box">
+    <p>🍪 Usamos cookies para mantener tu sesión activa y mejorar tu experiencia.</p>
+    <a class="btn-cookie" href="{{ url_for('aceptar_cookies') }}">Aceptar cookies</a>
 </div>
+{% endif %}
 
 </body>
 </html>
